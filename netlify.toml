@@ -1,0 +1,7 @@
+# Netlify builds the site from the workbooks and publishes only the generated pages.
+[build]
+  command = "python build_site.py"
+  publish = "site"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
