@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jeuz Salvedia | Finance portfolio</title>
+<meta name="description" content="Finance graduate from De La Salle University. Valuation and merger models built in Excel.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fbfcfb;--ink:#1c2420;--muted:#55625b;--line:#dde4df;
+  --accent:#217346;--accent-ink:#ffffff;--tint:#e6f1ea;
+  --radius:6px;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#121915;--ink:#e6ece8;--muted:#9aa8a0;--line:#2a352f;
+  --accent:#5cc58c;--accent-ink:#0d1a12;--tint:#1b2a21;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 "IBM Plex Sans",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+h1,h2,h3{line-height:1.15;margin:0;font-weight:600}
+h2{font-size:26px;letter-spacing:-.01em;margin-bottom:28px}
+section{padding:72px 0;border-top:1px solid var(--line)}
+
+/* intro */
+.intro{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:56px;align-items:end;padding:72px 0}
+.intro img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 22%;border-radius:var(--radius);display:block;background:var(--tint)}
+.intro h1{font-size:clamp(40px,6vw,64px);font-weight:700;letter-spacing:-.025em}
+.intro p{font-size:20px;color:var(--muted);max-width:30ch;margin:16px 0 32px}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;padding:13px 22px;border-radius:var(--radius);transition:transform .12s}
+.btn:active{transform:translateY(1px)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
+.link{font-weight:600}
+.contact{display:flex;flex-wrap:wrap;gap:16px 48px;font-size:19px}
+.contact span{display:block;font-size:14px;color:var(--muted)}
+
+/* model register */
+.case{margin-bottom:48px}
+.case:last-child{margin-bottom:0}
+.case h3{font-size:19px}
+.case > p{color:var(--muted);margin:6px 0 16px;max-width:62ch}
+.model{display:grid;grid-template-columns:1fr minmax(0,15rem) auto;gap:8px 32px;align-items:center;padding:18px 20px;border-radius:var(--radius);text-decoration:none;color:inherit}
+.model + .model{border-top:1px solid var(--line);border-radius:0}
+.model:hover{background:var(--tint)}
+.model b{display:block;font-weight:600}
+.model .ask{color:var(--muted);font-size:15px}
+.model .out{font-variant-numeric:tabular-nums;font-weight:600;font-size:18px}
+.model .out small{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+.model .open{color:var(--accent);font-weight:600;font-size:15px;white-space:nowrap}
+
+/* experience & education */
+.cols{display:grid;grid-template-columns:3fr 2fr;gap:56px}
+.cols p:first-child{margin-top:0}
+.entry{margin-bottom:28px}
+.entry h3{font-size:17px}
+.entry .meta{color:var(--muted);font-size:15px;margin:2px 0 6px}
+.entry p{margin:0;max-width:56ch}
+.skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px 40px}
+.skills h3{font-size:15px;color:var(--muted);font-weight:500;margin-bottom:6px}
+.skills p{margin:0}
+footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+
+@media (max-width:760px){
+  body{font-size:16px}
+  .intro{grid-template-columns:1fr;gap:28px;padding:40px 0 56px}
+  .intro img{max-width:260px}
+  section{padding:56px 0}
+  .model{grid-template-columns:1fr;padding:16px 4px}
+  .model:hover{background:none}
+  .cols{grid-template-columns:1fr;gap:16px}
+}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header class="intro">
+  <img src="jeuz-salvedia.jpg" alt="Jeuz Salvedia in a barong at his graduation, holding his medal" width="800" height="800">
+  <div>
+    <h1>Jeuz Salvedia</h1>
+    <p>Finance graduate from De La Salle University. I build valuation and merger models in Excel.</p>
+    <div class="actions"><a class="btn" href="#models">Open the models</a><a class="link" href="#contact">Contact</a></div>
+  </div>
+</header>
+
+<section id="models">
+  <h2>Models</h2>
+{{MODELS}}
+</section>
+
+<section>
+  <h2>About</h2>
+  <div class="cols">
+    <div>
+      <p>I studied Management of Financial Institutions at De La Salle University, Manila, where I built independent valuations of listed Philippine companies using DCF, comparable company, and precedent transaction analysis.</p>
+      <p>Alongside finance, I've worked in client advisory as an insurance agent and in day-to-day operations at a trading business. I'm looking for roles in business analysis, corporate strategy, financial planning, and operations.</p>
+    </div>
+    <div>
+      <div class="entry">
+        <h3>De La Salle University, Manila</h3>
+        <div class="meta">BS Management of Financial Institutions, 2022 to 2026</div>
+      </div>
+      <div class="entry">
+        <h3>Pasig City Science High School</h3>
+        <div class="meta">STEM, 2016 to 2022</div>
+        <p>Graduated with High Honors</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Experience</h2>
+  <div class="entry">
+    <h3>Licensed Insurance Agent, Insular Life</h3>
+    <div class="meta">Part-time, remote. September 2026 to present</div>
+    <p>Guide clients through insurance products and assess their financial protection needs.</p>
+  </div>
+  <div class="entry">
+    <h3>Inventory Coordinator, JAAZ Consumer Goods Trading</h3>
+    <div class="meta">Part-time, Pasig. May 2024 to September 2026</div>
+    <p>Coordinated inventory and supply workflows for a wholesale and retail business.</p>
+  </div>
+  <div class="entry">
+    <h3>Sales Intern, Allianz PNB Life</h3>
+    <div class="meta">Internship, Makati. February to April 2026</div>
+    <p>Supported sales activities and client engagement for insurance products.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Skills</h2>
+  <div class="skills">
+    <div><h3>Financial analysis</h3><p>Financial modeling, DCF valuation, comparable company and precedent transaction analysis</p></div>
+    <div><h3>Business analysis</h3><p>Quantitative analysis, business performance analysis, problem-solving</p></div>
+    <div><h3>Client relations</h3><p>Client needs assessment, financial advisory, sales</p></div>
+    <div><h3>Operations</h3><p>Inventory coordination, supply workflow management</p></div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="contact">
+    <div><span>Email</span><a href="mailto:jeuz_salvedia@dlsu.edu.ph">jeuz_salvedia@dlsu.edu.ph</a></div>
+    <div><span>LinkedIn</span><a href="https://www.linkedin.com/in/jeuz-salvedia-5a969a263">linkedin.com/in/jeuz-salvedia-5a969a263</a></div>
+  </div>
+</section>
+
+</main>
+<footer><div class="wrap">Models built for portfolio purposes from public company data. Not investment advice.</div></footer>
+</body>
+</html>

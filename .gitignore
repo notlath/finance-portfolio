@@ -1,0 +1,28 @@
+# Build output: regenerate with `python build_site.py`
+site/
+dist/
+
+# Private notes about Jeuz (contains "confirm before publishing" review notes)
+docs/Jeuz_Salvedia_Professional_Profile.md
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Excel / Office lock and temp files
+~$*
+*.tmp
+
+# Editor and tool state
+.serena/
+.claude/skills/
+.claude/settings.local.json
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
