@@ -291,11 +291,19 @@ th.rh.on{box-shadow:inset -1px -1px 0 var(--hdrline),inset -2px 0 0 var(--xl)}
 .tabs button:hover{background:#e6e6e6}
 .tabs button.on{background:#fff;color:var(--xl);font-weight:600;box-shadow:inset 0 -3px 0 var(--xl)}
 .tabs small{align-self:center;color:var(--muted);padding:0 14px;white-space:nowrap}
+.zoom{display:flex;align-items:center;gap:2px;padding-inline:8px;border-inline-start:1px solid var(--hdrline)}
+.zoom button{border:0;background:transparent;font:inherit;color:#333;min-width:30px;height:28px;padding-inline:6px;border-radius:4px;cursor:pointer}
+.zoom button:active{background:#d9d9d9}
+.zoom .pct{min-width:52px;font-variant-numeric:tabular-nums}
+.zoom .fit{color:var(--xl);font-weight:600}
+button:focus-visible{outline:2px solid var(--xl);outline-offset:-2px}
+@media (hover:hover) and (pointer:fine){.zoom button:hover{background:#e6e6e6}}
+@media (pointer:coarse){.tabs{height:44px}.zoom button{min-width:44px;height:40px}}
 @media (max-width:700px){.tabs small,.title h1 span{display:none}.fbar .name{width:64px}}
 """
 
 PAGE_JS = """
-const sheets=[...document.querySelectorAll('.sheet')],tabs=[...document.querySelectorAll('.tabs button')];
+const sheets=[...document.querySelectorAll('.sheet')],tabs=[...document.querySelectorAll('.tabs nav button')];
 const grid=document.querySelector('.grid'),nameBox=document.querySelector('.fbar .name'),valBox=document.querySelector('.fbar .val');
 let sel=null,hl=[];
 function select(td){
@@ -310,10 +318,28 @@ function select(td){
   hl=[td.closest('.sheet').querySelector('th[data-c="'+col+'"]'),td.parentElement.firstElementChild];
   hl.forEach(h=>h&&h.classList.add('on'));
 }
+const ZMIN=0.25,ZMAX=2,STEP=0.1,pctBtn=document.querySelector('.zoom .pct');
+let zoom=1;
+function table(){return document.querySelector('.sheet.on table')}
+function setZoom(z){
+  zoom=Math.min(ZMAX,Math.max(ZMIN,Math.round(z*100)/100));
+  table().style.zoom=zoom;
+  const pct=Math.round(zoom*100)+'%';
+  pctBtn.textContent=pct;pctBtn.setAttribute('aria-label','Zoom '+pct+', reset to 100%');
+}
+function fit(){
+  const t=table();t.style.zoom=1;
+  const head=t.querySelector('thead').offsetHeight;
+  setZoom(Math.min(grid.clientWidth/t.offsetWidth,(grid.clientHeight-head)/(t.offsetHeight-head),1));
+}
+document.querySelector('.zoom .out').onclick=()=>setZoom(zoom-STEP);
+document.querySelector('.zoom .in').onclick=()=>setZoom(zoom+STEP);
+pctBtn.onclick=()=>setZoom(1);
+document.querySelector('.zoom .fit').onclick=fit;
 function show(i){
   sheets.forEach((s,j)=>s.classList.toggle('on',i===j));
   tabs.forEach((t,j)=>t.classList.toggle('on',i===j));
-  grid.scrollTo(0,0);select(null);
+  grid.scrollTo(0,0);select(null);setZoom(zoom);
   history.replaceState(null,'','#'+sheets[i].id);
 }
 tabs.forEach((t,i)=>t.onclick=()=>show(i));
@@ -340,7 +366,7 @@ def build_workbook(name):
 <a class="dl" href="{xlsx}" download>Download</a></div>
 <div class="fbar"><div class="name"></div><div class="fx">fx</div><div class="val"></div></div>
 <div class="grid">{body}</div>
-<div class="tabs"><nav>{tabs}</nav><small>Portfolio piece &middot; not investment advice</small></div>
+<div class="tabs"><nav>{tabs}</nav><small>Portfolio piece &middot; not investment advice</small><div class="zoom" role="group" aria-label="Zoom"><button type="button" class="out" aria-label="Zoom out">&minus;</button><button type="button" class="pct" aria-label="Zoom 100%, reset to 100%">100%</button><button type="button" class="in" aria-label="Zoom in">+</button><button type="button" class="fit" title="Fit the whole sheet on screen">Fit</button></div></div>
 <script>{PAGE_JS}</script></body></html>"""
     (SITE / f"{slug(name)}.html").write_text(page, encoding="utf-8")
     return sheets[0].title, len(sheets)
