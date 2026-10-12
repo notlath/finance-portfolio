@@ -13,10 +13,12 @@
   --paper:#fbfcfb;--ink:#1c2420;--muted:#55625b;--line:#dde4df;
   --accent:#217346;--accent-ink:#ffffff;--tint:#e6f1ea;
   --radius:6px;
+  --image-outline:oklch(0 0 0 / 0.1);
 }
 @media (prefers-color-scheme:dark){:root{
   --paper:#121915;--ink:#e6ece8;--muted:#9aa8a0;--line:#2a352f;
   --accent:#5cc58c;--accent-ink:#0d1a12;--tint:#1b2a21;
+  --image-outline:oklch(1 0 0 / 0.1);
 }}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 "IBM Plex Sans",Arial,sans-serif;-webkit-font-smoothing:antialiased}
@@ -29,11 +31,11 @@ section{padding:72px 0;border-top:1px solid var(--line)}
 
 /* intro */
 .intro{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:56px;align-items:end;padding:72px 0}
-.intro img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 22%;border-radius:var(--radius);display:block;background:var(--tint)}
+.intro img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 22%;border-radius:var(--radius);display:block;background:var(--tint);outline:1px solid var(--image-outline);outline-offset:-1px}
 .intro h1{font-size:clamp(40px,6vw,64px);font-weight:700;letter-spacing:-.025em}
 .intro p{font-size:20px;color:var(--muted);max-width:30ch;margin:16px 0 32px}
-.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;padding:13px 22px;border-radius:var(--radius);transition:transform .12s}
-.btn:active{transform:translateY(1px)}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;padding:13px 22px;border-radius:var(--radius);-webkit-tap-highlight-color:transparent}
+.btn:active{scale:0.96;background:color-mix(in oklch,var(--accent),black 12%)}
 .actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
 .link{font-weight:600}
 .link .note{font-weight:400}
@@ -45,9 +47,10 @@ section{padding:72px 0;border-top:1px solid var(--line)}
 .case:last-child{margin-bottom:0}
 .case h3{font-size:19px}
 .case > p{color:var(--muted);margin:6px 0 16px;max-width:62ch}
-.model{display:grid;grid-template-columns:1fr minmax(0,15rem) auto;gap:8px 32px;align-items:center;padding:18px 20px;border-radius:var(--radius);text-decoration:none;color:inherit}
-.model + .model{border-top:1px solid var(--line);border-radius:0}
-.model:hover{background:var(--tint)}
+.model{display:grid;grid-template-columns:1fr minmax(0,15rem) auto;gap:8px 32px;align-items:center;padding:18px 20px;text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent}
+.model + .model{border-top:1px solid var(--line)}
+.model:active{background:var(--tint)}
+@media (hover:hover){.model:hover{background:var(--tint)}}
 .model b{display:block;font-weight:600}
 .model .ask{color:var(--muted);font-size:15px}
 .model .out{font-variant-numeric:tabular-nums;font-weight:600;font-size:18px}
@@ -72,10 +75,19 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
   .intro img{max-width:260px}
   section{padding:56px 0}
   .model{grid-template-columns:1fr;padding:16px 4px}
-  .model:hover{background:none}
   .cols{grid-template-columns:1fr;gap:16px}
 }
-@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+/* motion: opacity for everyone, movement and scale only without the reduced-motion preference */
+.intro .enter{animation:fade-in 300ms ease-out both}
+.intro .enter:nth-child(2){animation-delay:100ms}
+.intro .enter:nth-child(3){animation-delay:200ms}
+@media (prefers-reduced-motion:no-preference){
+  .intro .enter{animation-name:fade-in-up}
+  .btn{transition-property:scale;transition-duration:150ms;transition-timing-function:ease-out}
+}
+@media (prefers-reduced-motion:reduce){.btn:active{scale:1}}
+@keyframes fade-in{from{opacity:0}}
+@keyframes fade-in-up{from{opacity:0;transform:translateY(12px);filter:blur(4px)}}
 </style>
 </head>
 <body>
@@ -84,9 +96,9 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
 <header class="intro">
   <img src="jeuz-salvedia.jpg" alt="Jeuz Salvedia in a barong, holding a medal" width="800" height="800">
   <div>
-    <h1>Jeuz Salvedia</h1>
-    <p>Incoming finance graduate from De La Salle University Manila. I build valuation and merger models.</p>
-    <div class="actions"><a class="btn" href="#models">Open the models</a><a class="link" href="Jeuz_Salvedia_Resume.pdf" download>Download résumé <span class="note">(PDF)</span></a></div>
+    <h1 class="enter">Jeuz Salvedia</h1>
+    <p class="enter">Incoming finance graduate from De La Salle University Manila. I build valuation and merger models.</p>
+    <div class="actions enter"><a class="btn" href="#models">Open the models</a><a class="link" href="Jeuz_Salvedia_Resume.pdf" download>Download résumé <span class="note">(PDF)</span></a></div>
   </div>
 </header>
 
