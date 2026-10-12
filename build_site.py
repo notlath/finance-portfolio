@@ -373,8 +373,7 @@ def build_workbook(name):
 
 
 # Portfolio home: profile copy lives in index.template.html; the model register is filled from the workbooks.
-# Each output is (cell on the file's first sheet, format, caption). Format None drops centavos
-# from peso amounts in the millions; "{}" shows the cell text as is.
+# Each output is (cell on the file's first sheet, format or None for text cells, caption).
 CASES = [
     ("Monde Nissin Corporation valuation",
      "What is Monde Nissin worth? Three methods built on the same company financials. Share price at the time: {price}.",
@@ -383,7 +382,7 @@ CASES = [
       ("Precedent Transaction Analysis", "Values Monde on prices paid in Philippine and ASEAN food and beverage acquisitions",
        ("D19", None, "LTM implied enterprise value, ₱ in millions")),
       ("Discounted Cash Flow Analysis", "Values Monde on projected free cash flow through 2031",
-       ("P14", "{}", "sensitivity-implied enterprise value (exit multiple method)"))]),
+       ("P14", None, "sensitivity-implied enterprise value (exit multiple method)"))]),
     ("Megaworld acquisition of Filinvest Land",
      "Would buying Filinvest Land raise or lower Megaworld's earnings per share?",
      [("Merger Consequences Analysis", "Tests a deal funded with cash, new debt, and Megaworld shares",
