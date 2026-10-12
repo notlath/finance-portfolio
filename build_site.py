@@ -379,7 +379,7 @@ CASES = [
      "What is Monde Nissin worth? Three methods built on the same company financials. Share price at the time: {price}.",
      [("Comparable Company Analysis", "Benchmarks Monde against Universal Robina, Century Pacific, and San Miguel Food and Beverage",
        ("H23", None, "implied share price, LTM EV / EBITDA")),
-      ("Precedent Transaction Analysis", "Values Monde on prices paid in recent Philippine food acquisitions",
+      ("Precedent Transaction Analysis", "Values Monde on prices paid in Philippine and ASEAN food and beverage acquisitions",
        ("D19", None, "implied enterprise value, ₱ millions")),
       ("Discounted Cash Flow Analysis", "Values Monde on projected free cash flow through 2031",
        ("G34", "₱{:.2f}", "implied share price"))]),
@@ -410,6 +410,7 @@ def build_index():
     page = (ROOT / "index.template.html").read_text(encoding="utf-8").replace("{{MODELS}}", "\n".join(blocks))
     (SITE / "index.html").write_text(page, encoding="utf-8")
     shutil.copy(ROOT / "assets" / "jeuz-salvedia-icon.jfif", SITE / "jeuz-salvedia.jpg")
+    shutil.copy(DOCS / "Jeuz_Salvedia_Resume.pdf", SITE / "Jeuz_Salvedia_Resume.pdf")
 
 
 if __name__ == "__main__":
