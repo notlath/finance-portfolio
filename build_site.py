@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import openpyxl
+from openpyxl.cell.rich_text import CellRichText, TextBlock
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.formula import ArrayFormula
 
@@ -85,6 +86,10 @@ def fmt_number(v, fmt):
 
 
 def selfcheck():
+    from openpyxl.cell.text import InlineFont
+    mixed = rich_text_html(CellRichText(TextBlock(InlineFont(b=True), "Coverage Ratios "), TextBlock(InlineFont(i=True), "(2)")), [])
+    assert 'font-weight:700;font-style:normal">Coverage Ratios </span>' in mixed, mixed
+    assert 'font-weight:400;font-style:italic">(2)</span>' in mixed, mixed
     assert fmt_number(7.4, "0.0x") == "7.4x"
     assert fmt_number(0.181, "0.0%") == "18.1%"
     assert fmt_number(1234.5, "[$₱]#,##0.00") == "₱1,234.50"
@@ -142,6 +147,27 @@ def side_css(side, theme):
 
 
 # ---------- sheet rendering ----------
+
+
+def rich_text_html(v, theme):
+    """A cell whose text mixes fonts (e.g. a bold label with an italic "(2)" footnote): one span per run."""
+    out = []
+    for run in v:
+        if not isinstance(run, TextBlock):  # plain run: inherits the cell's font
+            out.append(html.escape(str(run)))
+            continue
+        f, st = run.font, []
+        st.append(f"font-weight:{700 if f.b else 400}")
+        st.append(f"font-style:{'italic' if f.i else 'normal'}")
+        if f.u:
+            st.append("text-decoration:underline")
+        if f.sz:
+            st.append(f"font-size:{f.sz:g}pt")
+        fc = css_color(f.color, theme)
+        if fc:
+            st.append(f"color:{fc}")
+        out.append(f'<span style="{";".join(st)}">{html.escape(run.text)}</span>')
+    return "".join(out).replace("\n", "<br>")
 
 
 def raw_value(v):
@@ -239,7 +265,10 @@ def render_sheet(ws, theme, fws):
             nxt = ws.cell(r, (rng.max_col if rng else c) + 1).value if c < max_c else 1
             if nxt is not None and not (al is not None and al.wrap_text):
                 st.append("overflow:hidden")
-            text = "" if v is None else html.escape(fmt_number(v, cell.number_format)).replace("\n", "<br>")
+            if isinstance(v, CellRichText):
+                text = rich_text_html(v, theme)
+            else:
+                text = "" if v is None else html.escape(fmt_number(v, cell.number_format)).replace("\n", "<br>")
             style = f' style="{";".join(st)}"' if st else ""
             tds.append(f"<td{attrs}{style}>{text}</td>")
         h_style = f' style="height:{round(ht * 4 / 3)}px"' if ht else ""
@@ -351,8 +380,8 @@ show(start<0?0:start);
 
 def build_workbook(name):
     path = DOCS / f"{name}.xlsx"
-    wb = openpyxl.load_workbook(path, data_only=True)
-    fwb = openpyxl.load_workbook(path)  # same file, formulas instead of cached values
+    wb = openpyxl.load_workbook(path, data_only=True, rich_text=True)
+    fwb = openpyxl.load_workbook(path, rich_text=True)  # same file, formulas instead of cached values
     theme = theme_colors(wb)
     sheets = [ws for ws in wb.worksheets if ws.sheet_state == "visible"]
     tabs = "".join(f'<button type="button">{html.escape(ws.title)}</button>' for ws in sheets)
