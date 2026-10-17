@@ -86,6 +86,15 @@ def fmt_number(v, fmt):
 
 
 def selfcheck():
+    from openpyxl.styles import Border, PatternFill, Side
+    box = openpyxl.Workbook().active  # a box merged J4:N4: text and fill in J4, only borders beyond it
+    box["J4"] = "Target Description"
+    box["J4"].fill = PatternFill("solid", fgColor="CC0000")
+    box.merge_cells("J4:N4")
+    box["N4"].border = Border(right=Side("thin"))
+    box["N6"].border = Border(bottom=Side("thin"))
+    grid = render_sheet(box, [], box)
+    assert '<th data-c="N">' in grid and grid.count('<th class="rh">') == 6, "trimmed away a merged or bordered cell"
     from openpyxl.cell.text import InlineFont
     mixed = rich_text_html(CellRichText(TextBlock(InlineFont(b=True), "Coverage Ratios "), TextBlock(InlineFont(i=True), "(2)")), [])
     assert 'font-weight:700;font-style:normal">Coverage Ratios </span>' in mixed, mixed
@@ -180,9 +189,16 @@ def raw_value(v):
 
 
 def render_sheet(ws, theme, fws):
-    # Trim trailing rows/cols that are blank and unfilled (Sheets exports pad the used range).
-    used = [(c.row, c.column) for row in ws.iter_rows() for c in row
-            if c.value is not None or (c.fill is not None and c.fill.fill_type == "solid")]
+    # Trim trailing rows/cols that draw nothing (Sheets exports pad the used range). A cell draws something if
+    # it has a value, a fill or a border; a merged range draws out to its far corner even when only its
+    # top-left cell holds the text.
+    def draws(c):
+        b = c.border
+        return (c.value is not None or (c.fill is not None and c.fill.fill_type == "solid")
+                or (b is not None and any(getattr(getattr(b, s, None), "style", None) for s in ("left", "right", "top", "bottom"))))
+
+    used = [(c.row, c.column) for row in ws.iter_rows() for c in row if draws(c)]
+    used += [(rng.max_row, rng.max_col) for rng in ws.merged_cells.ranges]
     max_r, max_c = max(r for r, _ in used), max(c for _, c in used)
     merged, covered = {}, set()
     for rng in ws.merged_cells.ranges:
