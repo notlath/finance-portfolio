@@ -471,7 +471,7 @@ def football_field(models, outs):
     rows = "".join(
         f'<div class="f-row"><span class="f-name">{html.escape(n.removesuffix(" Analysis"))}</span>'
         f'<span class="f-track" aria-hidden="true"><i style="left:{(a - lo) / (hi - lo):.2%};width:{(b - a) / (hi - lo):.2%}"></i></span>'
-        f'<span class="f-val">{o.replace(" - ", " &ndash; ")}</span></div>'
+        f'<span class="f-val">{o}</span></div>'
         for (n, *_), (a, b), o in zip(models, nums, outs))
     ticks = "".join(f"<span>₱{v:,.0f}</span>" for v in (lo, (lo + hi) / 2, hi))
     return (f'<figure class="field"><figcaption>Implied enterprise value range, ₱ in millions</figcaption>{rows}'
@@ -486,8 +486,8 @@ def build_index():
         field = football_field(models, outs)
         rows = "".join(
             f'<a class="model" href="{slug(n)}.html"><span class="main"><b>{html.escape(n)}</b><span class="ask">{html.escape(ask)}</span></span>'
-            f'<span class="out{" gain" if o[0] == "+" else " loss" if o[0] == "-" else ""}">{html.escape(o.replace(" - ", " – "))}<small>{html.escape(cap)}</small></span>'
-            f'<span class="open">Open model</span></a>'
+            f'<span class="out{" gain" if o[0] == "+" else " loss" if o[0] == "-" else ""}">{html.escape(o)}<small>{html.escape(cap)}</small></span>'
+            f'<span class="open">Open model <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>'
             for (n, ask, (_, _, cap)), o in zip(models, outs))
         blocks.append(f'  <div class="case"><div class="case-head"><h3>{html.escape(title)}</h3><p>{html.escape(intro.format(price=price))}</p></div>{field}{rows}</div>')
     count = sum(len(models) for _, _, models in CASES)
@@ -495,6 +495,7 @@ def build_index():
             .replace("{{MODELS}}", "\n".join(blocks)).replace("{{MODEL_COUNT}}", str(count)))
     (SITE / "index.html").write_text(page, encoding="utf-8")
     shutil.copy(ROOT / "assets" / "jeuz-salvedia-icon.jfif", SITE / "jeuz-salvedia.jpg")
+    shutil.copy(ROOT / "assets" / "edu-logo.png", SITE / "edu-logo.png")
     shutil.copy(DOCS / "Jeuz_Salvedia_Resume.pdf", SITE / "Jeuz_Salvedia_Resume.pdf")
 
 
