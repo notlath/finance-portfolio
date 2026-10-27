@@ -303,48 +303,59 @@ def slug(s):
 
 
 PAGE_CSS = """
-:root{--xl:#217346;--chrome:#f3f3f3;--hdrline:#d0d0d0;--ink:#1f2933;--muted:#5f6b76}
+:root{color-scheme:light dark;--brand:#16294a;--brass:#c9a24a;--chrome:#f1f2f5;--hdrline:#d3d7de;--ink:#1d2433;--muted:#5b6678;--hl:#dde5f2;--hover:#e4e7ed;--tabon:#fff;--page:#fff}
+@media (prefers-color-scheme:dark){:root{--brand:#0e1a30;--chrome:#18233a;--hdrline:#2c3a56;--ink:#e8ecf3;--muted:#9aa7bf;--hl:#2a3b5e;--hover:#223049;--tabon:#0b1424;--page:#0b1424}}
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
 html,body{height:100%}
-body{margin:0;display:flex;flex-direction:column;background:#fff;color:var(--ink);font-family:"Segoe UI",Arial,Helvetica,sans-serif;font-size:13px}
-.title{display:flex;align-items:center;gap:14px;padding:10px 16px;background:var(--xl);color:#fff}
+body{margin:0;height:100dvh;display:flex;flex-direction:column;background:var(--page);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-size:13px}
+.title{display:flex;align-items:center;gap:6px;padding:max(8px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));background:var(--brand);color:#fff;border-bottom:2px solid var(--brass)}
 .title a{color:#fff;text-decoration:none;opacity:.85}
-.title a:hover{opacity:1}
+.title .back{display:grid;place-items:center;width:40px;height:40px;margin-left:-8px;font-size:18px;border-radius:6px}
 .title h1{font-size:15px;font-weight:600;margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.title h1 span{font-weight:400;opacity:.8}
-.title .dl{border:1px solid rgba(255,255,255,.6);border-radius:4px;padding:4px 10px;white-space:nowrap}
-.fbar{display:flex;border-bottom:1px solid var(--hdrline);height:30px}
-.fbar .name{width:90px;border-right:1px solid var(--hdrline);padding:6px 8px;font-family:Consolas,monospace}
+.title h1 span{font-weight:400;opacity:.75}
+.title .dl{display:inline-flex;align-items:center;min-height:36px;border:1px solid rgba(255,255,255,.55);border-radius:6px;padding:0 12px;white-space:nowrap;font-weight:600;opacity:1;transition-property:scale,background-color;transition-duration:150ms;transition-timing-function:ease-out}
+.title .dl:active,.title .back:active{scale:.96;background:rgba(255,255,255,.14)}
+.fbar{display:flex;border-bottom:1px solid var(--hdrline);height:30px;background:var(--page)}
+.fbar .name{width:90px;border-right:1px solid var(--hdrline);padding:6px 8px;font-family:Consolas,ui-monospace,monospace}
 .fbar .fx{padding:6px 10px;color:var(--muted);font-style:italic;border-right:1px solid var(--hdrline)}
-.fbar .val{flex:1;padding:6px 10px;font-family:Consolas,monospace;white-space:nowrap;overflow-x:auto}
-.grid{flex:1;overflow:auto}
+.fbar .val{flex:1;padding:6px 10px;font-family:Consolas,ui-monospace,monospace;white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+.grid{flex:1;overflow:auto;overscroll-behavior:contain;background:#fff}
 .sheet{display:none}
 .sheet.on{display:block}
 table{border-collapse:separate;border-spacing:0;table-layout:fixed;font-family:Arial,Helvetica,sans-serif;font-size:10pt;color:#000}
 tr{height:21px}
 td{padding:2px 4px;white-space:nowrap;vertical-align:bottom;overflow:visible;cursor:cell}
-td.sel{outline:2px solid var(--xl);outline-offset:-1px}
-th{background:var(--chrome);color:#555;font:400 11px "Segoe UI",Arial,sans-serif;box-shadow:inset -1px -1px 0 var(--hdrline);padding:0;user-select:none}
+td.sel{outline:2px solid var(--brand);outline-offset:-1px}
+th{background:#f1f2f5;color:#555;font:400 11px "Segoe UI",Arial,sans-serif;box-shadow:inset -1px -1px 0 #d3d7de;padding:0;user-select:none}
 thead th{position:sticky;top:0;z-index:2;height:22px}
 th.rh{position:sticky;left:0;z-index:1;text-align:center}
 th.corner{left:0;z-index:3}
-th.on{background:#d3e5da;color:var(--xl);font-weight:600;box-shadow:inset -1px -1px 0 var(--hdrline),inset 0 -2px 0 var(--xl)}
-th.rh.on{box-shadow:inset -1px -1px 0 var(--hdrline),inset -2px 0 0 var(--xl)}
-.tabs{display:flex;background:var(--chrome);border-top:1px solid var(--hdrline);height:32px}
-.tabs nav{display:flex;overflow-x:auto;flex:1}
-.tabs button{border:0;border-right:1px solid var(--hdrline);background:transparent;padding:0 16px;font:inherit;color:#444;cursor:pointer;white-space:nowrap}
-.tabs button:hover{background:#e6e6e6}
-.tabs button.on{background:#fff;color:var(--xl);font-weight:600;box-shadow:inset 0 -3px 0 var(--xl)}
+th.on{background:#dde5f2;color:#16294a;font-weight:600;box-shadow:inset -1px -1px 0 #d3d7de,inset 0 -2px 0 #16294a}
+th.rh.on{box-shadow:inset -1px -1px 0 #d3d7de,inset -2px 0 0 #16294a}
+.tabs{display:flex;background:var(--chrome);border-top:1px solid var(--hdrline);min-height:36px;padding-bottom:env(safe-area-inset-bottom)}
+.tabs nav{display:flex;overflow-x:auto;flex:1;scrollbar-width:none}
+.tabs button{border:0;border-right:1px solid var(--hdrline);background:transparent;padding:0 16px;font:inherit;color:var(--muted);cursor:pointer;white-space:nowrap;-webkit-user-select:none;user-select:none;transition-property:background-color,color;transition-duration:150ms;transition-timing-function:ease}
+.tabs button:active{background:var(--hover)}
+.tabs button.on{background:var(--tabon);color:var(--ink);font-weight:600;box-shadow:inset 0 -3px 0 var(--brass)}
 .tabs small{align-self:center;color:var(--muted);padding:0 14px;white-space:nowrap}
 .zoom{display:flex;align-items:center;gap:2px;padding-inline:8px;border-inline-start:1px solid var(--hdrline)}
-.zoom button{border:0;background:transparent;font:inherit;color:#333;min-width:30px;height:28px;padding-inline:6px;border-radius:4px;cursor:pointer}
-.zoom button:active{background:#d9d9d9}
+.zoom button{border:0;background:transparent;font:inherit;color:var(--ink);min-width:30px;height:32px;padding-inline:6px;border-radius:4px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.zoom button:active{background:var(--hover)}
 .zoom .pct{min-width:52px;font-variant-numeric:tabular-nums}
-.zoom .fit{color:var(--xl);font-weight:600}
-button:focus-visible{outline:2px solid var(--xl);outline-offset:-2px}
-@media (hover:hover) and (pointer:fine){.zoom button:hover{background:#e6e6e6}}
-@media (pointer:coarse){.tabs{height:44px}.zoom button{min-width:44px;height:40px}}
-@media (max-width:700px){.tabs small,.title h1 span{display:none}.fbar .name{width:64px}}
+.zoom .fit{color:var(--brand);font-weight:600}
+@media (prefers-color-scheme:dark){.zoom .fit{color:var(--brass)}}
+button:focus-visible,.title a:focus-visible{outline:2px solid var(--brass);outline-offset:-2px}
+@media (hover:hover) and (pointer:fine){.tabs button:hover,.zoom button:hover{background:var(--hover)}.title .dl:hover,.title .back:hover{background:rgba(255,255,255,.12)}}
+@media (pointer:coarse){.tabs button{min-height:44px}.zoom button{min-width:44px;height:44px}.fbar{height:34px}}
+@media (max-width:700px){
+  .tabs{flex-wrap:wrap}
+  .tabs small,.title h1 span{display:none}
+  .tabs nav{flex:1 1 100%}
+  .zoom{flex:1 1 100%;justify-content:space-between;border-inline-start:0;border-top:1px solid var(--hdrline);padding-inline:max(8px,env(safe-area-inset-left)) max(8px,env(safe-area-inset-right))}
+  .fbar .name{width:64px}
+}
+@media (prefers-reduced-motion:reduce){.title .dl:active,.title .back:active{scale:1}}
 """
 
 PAGE_JS = """
@@ -377,6 +388,8 @@ function fit(){
   const head=t.querySelector('thead').offsetHeight;
   setZoom(Math.min(grid.clientWidth/t.offsetWidth,(grid.clientHeight-head)/(t.offsetHeight-head),1));
 }
+const narrow=matchMedia('(max-width:700px)');
+function fitWidth(){const t=table();t.style.zoom=1;setZoom(Math.max(.5,Math.min(1,grid.clientWidth/t.offsetWidth)))}
 document.querySelector('.zoom .out').onclick=()=>setZoom(zoom-STEP);
 document.querySelector('.zoom .in').onclick=()=>setZoom(zoom+STEP);
 pctBtn.onclick=()=>setZoom(1);
@@ -384,7 +397,7 @@ document.querySelector('.zoom .fit').onclick=fit;
 function show(i){
   sheets.forEach((s,j)=>s.classList.toggle('on',i===j));
   tabs.forEach((t,j)=>t.classList.toggle('on',i===j));
-  grid.scrollTo(0,0);select(null);setZoom(zoom);
+  grid.scrollTo(0,0);select(null);narrow.matches?fitWidth():setZoom(zoom);
   history.replaceState(null,'','#'+sheets[i].id);
 }
 tabs.forEach((t,i)=>t.onclick=()=>show(i));
@@ -405,9 +418,10 @@ def build_workbook(name):
     xlsx = f"{slug(name)}.xlsx"
     shutil.copy(path, SITE / xlsx)
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#16294a">
 <title>{html.escape(name)} | {OWNER}</title><style>{PAGE_CSS}</style></head><body>
-<div class="title"><a href="index.html" aria-label="Back to portfolio">&larr;</a><h1>{html.escape(name)}.xlsx <span>&middot; {OWNER}</span></h1>
+<div class="title"><a class="back" href="index.html" aria-label="Back to portfolio">&larr;</a><h1>{html.escape(name)}.xlsx <span>&middot; {OWNER}</span></h1>
 <a class="dl" href="{xlsx}" download>Download</a></div>
 <div class="fbar"><div class="name"></div><div class="fx">fx</div><div class="val"></div></div>
 <div class="grid">{body}</div>
@@ -442,17 +456,43 @@ def cell_text(name, ref, fmt):
     return re.sub(r"(\d{1,3}(?:,\d{3})+)\.\d+", r"\1", str(v))  # drop centavos on millions
 
 
+RANGE = re.compile(r"₱([\d,]+) - ₱([\d,]+)")
+
+
+def football_field(models, outs):
+    """Football-field chart: one bar per method on a shared scale. Empty unless every output is a ₱ range."""
+    spans = [RANGE.fullmatch(o) for o in outs]
+    if len(models) < 2 or not all(spans):
+        return ""
+    nums = [tuple(float(g.replace(",", "")) for g in m.groups()) for m in spans]
+    step = 10_000
+    lo = int(min(a for a, _ in nums) * 0.92 // step * step)
+    hi = int(-(-max(b for _, b in nums) * 1.05 // step) * step)
+    rows = "".join(
+        f'<div class="f-row"><span class="f-name">{html.escape(n.removesuffix(" Analysis"))}</span>'
+        f'<span class="f-track" aria-hidden="true"><i style="left:{(a - lo) / (hi - lo):.2%};width:{(b - a) / (hi - lo):.2%}"></i></span>'
+        f'<span class="f-val">{o.replace(" - ", " &ndash; ")}</span></div>'
+        for (n, *_), (a, b), o in zip(models, nums, outs))
+    ticks = "".join(f"<span>₱{v:,.0f}</span>" for v in (lo, (lo + hi) / 2, hi))
+    return (f'<figure class="field"><figcaption>Implied enterprise value range, ₱ in millions</figcaption>{rows}'
+            f'<div class="f-axis" aria-hidden="true"><div class="f-ticks">{ticks}</div></div></figure>')
+
+
 def build_index():
     price = cell_text("Comparable Company Analysis", "C7", "₱{:.2f}")
     blocks = []
     for title, intro, models in CASES:
+        outs = [cell_text(n, ref, fmt) for n, _, (ref, fmt, _) in models]
+        field = football_field(models, outs)
         rows = "".join(
-            f'<a class="model" href="{slug(n)}.html"><span><b>{html.escape(n)}</b><span class="ask">{html.escape(ask)}</span></span>'
-            f'<span class="out">{html.escape(cell_text(n, ref, fmt))}<small>{html.escape(cap)}</small></span>'
+            f'<a class="model" href="{slug(n)}.html"><span class="main"><b>{html.escape(n)}</b><span class="ask">{html.escape(ask)}</span></span>'
+            f'<span class="out{" gain" if o[0] == "+" else " loss" if o[0] == "-" else ""}">{html.escape(o.replace(" - ", " – "))}<small>{html.escape(cap)}</small></span>'
             f'<span class="open">Open model</span></a>'
-            for n, ask, (ref, fmt, cap) in models)
-        blocks.append(f'  <div class="case"><h3>{html.escape(title)}</h3><p>{html.escape(intro.format(price=price))}</p>{rows}</div>')
-    page = (ROOT / "index.template.html").read_text(encoding="utf-8").replace("{{MODELS}}", "\n".join(blocks))
+            for (n, ask, (_, _, cap)), o in zip(models, outs))
+        blocks.append(f'  <div class="case"><div class="case-head"><h3>{html.escape(title)}</h3><p>{html.escape(intro.format(price=price))}</p></div>{field}{rows}</div>')
+    count = sum(len(models) for _, _, models in CASES)
+    page = ((ROOT / "index.template.html").read_text(encoding="utf-8")
+            .replace("{{MODELS}}", "\n".join(blocks)).replace("{{MODEL_COUNT}}", str(count)))
     (SITE / "index.html").write_text(page, encoding="utf-8")
     shutil.copy(ROOT / "assets" / "jeuz-salvedia-icon.jfif", SITE / "jeuz-salvedia.jpg")
     shutil.copy(DOCS / "Jeuz_Salvedia_Resume.pdf", SITE / "Jeuz_Salvedia_Resume.pdf")
